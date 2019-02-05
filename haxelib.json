@@ -1,0 +1,12 @@
+{
+    "name": "om.theme",
+    "version": "0.0.0",
+    "description": "App theme",
+    "tags": ["om","theme"],
+    "url": "https://github.com/omlib/om.theme",
+    "license": "Public",
+    "contributors": ["tong"],
+    "releasenote": "See CHANGELOG",
+    "classPath" : "src/",
+    "dependencies": {}
+}
