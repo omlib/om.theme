@@ -20,9 +20,9 @@ typedef Data = {
 }
 
 class Theme {
-	
-	public static function set( theme : Data ) {
-		var e = document.head.querySelector( 'style.theme' );
+
+	public static function apply( theme : Data, name = 'theme' ) {
+		var e = document.head.querySelector( 'style[name="$name"]' );
 		if( e == null ) {
 			e = document.createStyleElement();
 			e.classList.add( 'theme' );
@@ -31,8 +31,8 @@ class Theme {
 		e.innerHTML = toCSS( theme );
 	}
 
-	public static inline function setSVG( str : String ) {
-		set( parseSVG( str ) );
+	public static inline function applySVG( str : String ) {
+		apply( parseSVG( str ) );
 	}
 
 	public static function toCSS( theme : Data ) : String {
