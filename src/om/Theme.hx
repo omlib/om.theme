@@ -9,17 +9,41 @@ import js.html.SupportedType;
 using StringTools;
 
 typedef Data = {
+
+	/** Application Background. **/
 	var background : String;
+
+	/** Foreground, high-contrast. **/
 	var f_high : String;
+	
+	/** Foreground, medium-contrast. **/
 	var f_med : String;
+	
+	/** Foreground, low-contrast. **/
 	var f_low : String;
+	
+	/** Foreground, for modals and overlays. **/
 	var f_inv : String;
+	
+	/** Background, high-contrast. **/
 	var b_high : String;
+	
+	/** Background, medium-contrast. **/
 	var b_med : String;
+	
+	/** Background, low-contrast. **/
 	var b_low : String;
+	
+	/** Background, for modals and overlays. **/
 	var b_inv : String;
 }
 
+/**
+	Each foreground color should be readable on every background color, with the exception of the inv types, which are designed to be used in warnings or modals and should only overlap each other.
+	A variable's contrast should be seen as an offset to the global background color, so instance, f_high represents a high contrast color against the global background, and so does b_high, representing a highly contrasted color against the global background.
+	
+	You can test your themes online with the Theme Benchmark: https://hundredrabbits.github.io/Themes/
+*/
 class Theme {
 
 	public var data(default,null) : Data;
