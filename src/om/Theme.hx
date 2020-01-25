@@ -1,8 +1,10 @@
 package om;
 
-import js.html.DOMParser;
-import js.html.SupportedType;
 import js.Browser.document;
+import js.html.DOMParser;
+import js.html.Element;
+import js.html.StyleElement;
+import js.html.SupportedType;
 
 using StringTools;
 
@@ -16,11 +18,34 @@ typedef Data = {
 	var b_med : String;
 	var b_low : String;
 	var b_inv : String;
-	var accent : String;
 }
 
 class Theme {
 
+	public var data(default,null) : Data;
+
+	var element : StyleElement;
+
+	public function new() {
+		element = document.createStyleElement();
+		element.type = 'text/css';
+	}
+
+	public function install( ?host : Element ) {
+		if( host == null ) host = document.head;
+		host.appendChild( element );
+	}
+
+	public function uninstall() {
+		element.remove();
+	}
+
+	public function set( data : Data, ?selector : String ) {
+		this.data = data;
+		element.innerHTML = toCSS( selector, data );
+	}
+
+	/*
 	public static function apply( theme : Data, name = 'theme' ) {
 		var e = document.head.querySelector( 'style[name="$name"]' );
 		if( e == null ) {
@@ -34,12 +59,13 @@ class Theme {
 	public static inline function applySVG( str : String ) {
 		apply( parseSVG( str ) );
 	}
+	*/
 
-	public static function toCSS( theme : Data ) : String {
-		var s = ':root{';
+	public static function toCSS( selector = ':root', theme : Data) : String {
+		var s = '$selector{';
 		for( f in Reflect.fields( theme ) )
-			s += '--${f.replace('_','-')}:${Reflect.field( theme, f )};';
-		return s + '}';
+			s += '--$f:${Reflect.field( theme, f )};';
+		return '$s}';
 	}
 		
 	/*
@@ -63,7 +89,7 @@ class Theme {
 		var svg = new DOMParser().parseFromString( str, SupportedType.TEXT_XML );
 		function get( id : String )
 			return svg.getElementById( id ).getAttribute( 'fill' );
-		var theme = {
+		return {
 			background : get( 'background' ),
 			f_high : get( 'f_high' ),
 			f_med : get( 'f_med' ),
@@ -73,10 +99,7 @@ class Theme {
 			b_med : get( 'b_med' ),
 			b_low : get( 'b_low' ),
 			b_inv : get( 'b_inv' ),
-			accent : get( 'accent' ),
 		};
-		if( theme.accent == null ) theme.accent = theme.f_high;
-		return theme;
 	}
 	
 }
